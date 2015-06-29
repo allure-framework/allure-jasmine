@@ -1,0 +1,26 @@
+{
+  "name": "protractor-allure-reporter",
+  "version": "1.4.3",
+  "description": "Allure Framework reporter to Protractor",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:ctapobep/protractor-allure-plugin.git"
+  },
+  "keywords": [
+    "protractor-plugin",
+    "protractor-reporter",
+    "allure"
+  ],
+  "scripts": {
+    "test": "protractor ./test/system/conf.js"
+  },
+  "dependencies": {
+    "allure-js-commons": "1.0.2"
+  },
+  "devDependencies": {
+    "protractor": "^2.0.0",
+    "lodash": "^3.7.0",
+    "mockery": "~1.4.0"
+  }
+}
