@@ -26,7 +26,7 @@
                 <artifactId>allure-maven-plugin</artifactId>
                 <version>${allure.maven.version}</version>
                 <configuration>
-                    <resultsPattern>${project.basedir}/reports</resultsPattern>
+                    <resultsPattern>${project.basedir}/allure-results</resultsPattern>
                     <!--<reportVersion>1.4.15</reportVersion>-->
                 </configuration>
             </plugin>

@@ -1,7 +1,6 @@
-var Allure = require('allure-js-commons'),
-    Runtime = require('allure-js-commons/runtime'),
-    _ = require('lodash');
-
+var Allure = require('allure-js-commons');
+var _ = require('lodash');
+var path = require('path');
 
 /**
  * See <a href="https://github.com/angular/protractor/blob/master/docs/plugins.md#writing-plugins">the docs</a>
@@ -10,12 +9,15 @@ var Allure = require('allure-js-commons'),
  */
 function AllureReporter() {
   var STATUS_PASSED = 'passed', STATUS_FAILED = 'failed';
-  this.setup = function(config) {
+  this.setup = function(userDefinedConfig) {
+    var pluginConfig = {allureReport: {resultsDir: 'allure-results'}, basePath: '.'};
+    pluginConfig = _.defaultsDeep(userDefinedConfig, pluginConfig);
     this.tests = [];
     this.currentCase = '';
     this.allure = new Allure();
+    var outDir = path.resolve(pluginConfig.basePath, pluginConfig.allureReport.resultsDir);
     this.allure.setOptions({
-      targetDir: './reports/'
+      targetDir: outDir
     });
     this.allure.startSuite(global.process.env.npm_package_description, Date.now());
   };
