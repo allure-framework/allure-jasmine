@@ -7,22 +7,35 @@ var path = require('path');
  * on how the plugins are written for Protractor.
  * @constructor
  */
-function AllureReporter() {
+function AllureReporter(allure) {
   var STATUS_PASSED = 'passed', STATUS_FAILED = 'failed';
+  this.allure = allure || new Allure();
+  this.globalStartTime = Date.now();
+  this.currentSuite = null;
+  this.currentCase = null;
+
   this.setup = function(userDefinedConfig) {
     var pluginConfig = {allureReport: {resultsDir: 'allure-results'}, basePath: '.'};
     pluginConfig = _.defaultsDeep(userDefinedConfig, pluginConfig);
-    this.tests = [];
-    this.currentCase = '';
-    this.allure = new Allure();
     var outDir = path.resolve(pluginConfig.basePath, pluginConfig.allureReport.resultsDir);
-    this.allure.setOptions({
-      targetDir: outDir
-    });
-    this.allure.startSuite(global.process.env.npm_package_description, Date.now());
+    this.allure.setOptions({ targetDir: outDir });
+    return this;
   };
 
   this.teardown = function(config) {
+    this.allure.endSuite(Date.now());
+  };
+
+  this.postTest = function(config, passed, testInfo) {
+    if(!this.currentSuite) {
+      this.allure.startSuite(testInfo.name, this.globalStartTime);
+    } else if(this.currentSuite !== testInfo.name) {
+      this.allure.endSuite(Date.now());
+      this.allure.startSuite(testInfo.name);
+    }
+    this.currentSuite = testInfo.name;
+
+    this.allure.startCase(testInfo.category, Date.now());
   };
 
   this.postResults = function(config) {
@@ -33,27 +46,6 @@ function AllureReporter() {
     }
 
     this.allure.endSuite(Date.now());
-  };
-
-  this.postTest = function(config, passed, testInfo) {
-    var info = testInfo;
-    info.passed = passed;
-    info.timestamp = Date.now();
-    this.tests.push(info);
-
-    if (this.currentCase != testInfo.name) {
-      if (this.currentCase) {
-        var errors = this.getErrorsForCase(this.currentCase);
-        this.allure.endCase((errors.length == 0) ? STATUS_PASSED : STATUS_FAILED, errors, Date.now());
-        this.currentCase = '';
-      }
-
-      this.allure.startCase(testInfo.name, Date.now());
-      this.currentCase = testInfo.name;
-    }
-
-    this.allure.startStep(testInfo.category, Date.now());
-    this.allure.endStep((passed) ? STATUS_PASSED : STATUS_FAILED, Date.now());
   };
 
   this.getErrorsForCase = function(caseName) {
@@ -74,6 +66,7 @@ function AllureReporter() {
 }
 
 var allureReporter = new AllureReporter();
+module.exports.AllureReporter = AllureReporter;
 module.exports.setup = allureReporter.setup.bind(allureReporter);
 module.exports.teardown = allureReporter.teardown.bind(allureReporter);
 module.exports.postResults = allureReporter.postResults.bind(allureReporter);

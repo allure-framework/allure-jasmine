@@ -2,6 +2,8 @@
   "name": "protractor-allure-reporter",
   "version": "1.0.0",
   "description": "Allure Framework reporter to Protractor",
+  "license": "ISC",
+  "author": "Stanislav Bashkyrtsev",
   "main": "index.js",
   "repository": {
     "type": "git",
@@ -13,7 +15,8 @@
     "allure"
   ],
   "scripts": {
-    "test": "node_modules/protractor/bin/protractor ./test/system/conf.js"
+    "test": "node_modules/.bin/jasmine JASMINE_CONFIG_PATH=test/jasmine.json",
+    "system": "node_modules/protractor/bin/protractor ./test/system/conf.js"
   },
   "dependencies": {
     "allure-js-commons": "1.0.2"
@@ -21,6 +24,13 @@
   "devDependencies": {
     "protractor": "2.1.0",
     "lodash": "3.10.0",
+    "jasmine": "2.3.1",
+    "jasmine-core": "2.3.0",
+    "karma": "0.12",
+    "karma-cli": "0.0.4",
+    "karma-firefox-launcher": "0.1.4",
+    "karma-jasmine": "0.3.5",
+    "karma-phantomjs-launcher": "0.1.4",
     "mockery": "1.4.0"
   }
 }
