@@ -22,7 +22,7 @@ function AllureReporter(allure) {
     return this;
   };
 
-  this.teardown = function(config) {
+  this.teardown = function() {
     this.allure.endSuite(Date.now());
   };
 
@@ -36,37 +36,21 @@ function AllureReporter(allure) {
     this.currentSuite = testInfo.name;
 
     this.allure.startCase(testInfo.category, Date.now());
+    this.allure.endCase(passed, null, Date.now());
+  };
+  this.startStep = function(stepName) {
+    this.currentCase.addStep(stepName);
+  };
+  this.endStep = function(){
+    this.currentCase.endStep();
   };
 
-  this.postResults = function(config) {
-    if (this.currentCase) {
-      var errors = this.getErrorsForCase(this.currentCase);
-      this.allure.endCase((errors.length === 0) ? STATUS_PASSED : STATUS_FAILED, errors, Date.now());
-      this.currentCase = '';
-    }
-
-    this.allure.endSuite(Date.now());
-  };
-
-  this.getErrorsForCase = function(caseName) {
-    var result = [];
-
-    _.map(this.tests, function() {
-      if (this.name === caseName) {
-        result.push({
-          step: this.category,
-          passed: this.passed,
-          timestamp: this.timestamp
-        });
-      }
-    });
-
-    return result;
-  }
+  this.postResults = function(config) {};
 }
 
 var allureReporter = new AllureReporter();
 module.exports.AllureReporter = AllureReporter;
+module.exports.allureReporter = allureReporter;
 module.exports.setup = allureReporter.setup.bind(allureReporter);
 module.exports.teardown = allureReporter.teardown.bind(allureReporter);
 module.exports.postResults = allureReporter.postResults.bind(allureReporter);
