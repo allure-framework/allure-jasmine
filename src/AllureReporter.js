@@ -10,15 +10,16 @@ var path = require('path');
 function AllureReporter(allure) {
   var STATUS_PASSED = 'passed', STATUS_FAILED = 'failed';
   this.allure = allure || new Allure();
-  this.globalStartTime = Date.now();
   this.currentSuite = null;
-  this.currentCase = null;
+  this.currentSteps = [];
+  this.prevCaseEnd = null;
 
   this.setup = function(userDefinedConfig) {
     var pluginConfig = {allureReport: {resultsDir: 'allure-results'}, basePath: '.'};
     pluginConfig = _.defaultsDeep(userDefinedConfig, pluginConfig);
     var outDir = path.resolve(pluginConfig.basePath, pluginConfig.allureReport.resultsDir);
-    this.allure.setOptions({ targetDir: outDir });
+    this.allure.setOptions({targetDir: outDir});
+    this.prevCaseEnd = Date.now();
     return this;
   };
 
@@ -27,25 +28,32 @@ function AllureReporter(allure) {
   };
 
   this.postTest = function(config, passed, testInfo) {
-    if(!this.currentSuite) {
+    if (!this.currentSuite) {
       this.allure.startSuite(testInfo.name, this.globalStartTime);
-    } else if(this.currentSuite !== testInfo.name) {
+    } else if (this.currentSuite !== testInfo.name) {
       this.allure.endSuite(Date.now());
       this.allure.startSuite(testInfo.name);
     }
-    this.currentSuite = testInfo.name;
-
-    this.allure.startCase(testInfo.category, Date.now());
+    this.allure.startCase(testInfo.category, this.prevCaseEnd);
+    if (this.currentSteps.length !== 0) {
+      this.allure.addStep(this.currentSteps[0].name, this.currentSteps[0].dateTime);
+    }
     this.allure.endCase(passed, null, Date.now());
+    this.currentSuite = testInfo.name;
   };
   this.startStep = function(stepName) {
-    this.currentCase.addStep(stepName);
+    var newStep = {name: stepName, dateTime: Date.now()};
+    newStep.parent = this.currentStep;
+    if (!this.currentStep) {
+      this.currentSteps.push(newStep);
+    }
+    this.currentStep = newStep;
   };
-  this.endStep = function(){
-    this.currentCase.endStep();
+  this.endStep = function() {
+    this.currentStep = this.currentStep.parent;
   };
-
-  this.postResults = function(config) {};
+  this.postResults = function(config) {
+  };
 }
 
 var allureReporter = new AllureReporter();
