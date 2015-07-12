@@ -13,14 +13,14 @@
     "allure"
   ],
   "scripts": {
-    "test": "protractor ./test/system/conf.js"
+    "test": "node_modules/protractor/bin/protractor ./test/system/conf.js"
   },
   "dependencies": {
     "allure-js-commons": "1.0.2"
   },
   "devDependencies": {
-    "protractor": "^2.0.0",
-    "lodash": "^3.7.0",
-    "mockery": "~1.4.0"
+    "protractor": "2.1.0",
+    "lodash": "3.7.0",
+    "mockery": "1.4.0"
   }
 }

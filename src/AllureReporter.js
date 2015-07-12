@@ -25,9 +25,6 @@ function AllureReporter() {
   };
 
   this.postResults = function(config) {
-    //console.log('postResults');
-    //console.log(this.tests);
-
     if (this.currentCase) {
       var errors = this.getErrorsForCase(this.currentCase);
       this.allure.endCase((errors.length == 0) ? 'OK' : 'FAILED', errors, Date.now());
