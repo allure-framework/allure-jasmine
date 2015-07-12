@@ -9,9 +9,8 @@ var Allure = require('allure-js-commons'),
  * @constructor
  */
 function AllureReporter() {
+  var STATUS_PASSED = 'passed', STATUS_FAILED = 'failed';
   this.setup = function(config) {
-    var outDir = './';
-
     this.tests = [];
     this.currentCase = '';
     this.allure = new Allure();
@@ -27,7 +26,7 @@ function AllureReporter() {
   this.postResults = function(config) {
     if (this.currentCase) {
       var errors = this.getErrorsForCase(this.currentCase);
-      this.allure.endCase((errors.length == 0) ? 'OK' : 'FAILED', errors, Date.now());
+      this.allure.endCase((errors.length === 0) ? STATUS_PASSED : STATUS_FAILED, errors, Date.now());
       this.currentCase = '';
     }
 
@@ -43,7 +42,7 @@ function AllureReporter() {
     if (this.currentCase != testInfo.name) {
       if (this.currentCase) {
         var errors = this.getErrorsForCase(this.currentCase);
-        this.allure.endCase((errors.length == 0) ? 'OK' : 'FAILED', errors, Date.now());
+        this.allure.endCase((errors.length == 0) ? STATUS_PASSED : STATUS_FAILED, errors, Date.now());
         this.currentCase = '';
       }
 
@@ -52,14 +51,14 @@ function AllureReporter() {
     }
 
     this.allure.startStep(testInfo.category, Date.now());
-    this.allure.endStep((passed) ? 'OK' : 'FAILED', Date.now());
+    this.allure.endStep((passed) ? STATUS_PASSED : STATUS_FAILED, Date.now());
   };
 
   this.getErrorsForCase = function(caseName) {
     var result = [];
 
     _.map(this.tests, function() {
-      if (this.name == caseName) {
+      if (this.name === caseName) {
         result.push({
           step: this.category,
           passed: this.passed,

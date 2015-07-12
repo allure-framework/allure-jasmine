@@ -7,7 +7,8 @@
     <artifactId>protractor-allure-plugin-generate-html</artifactId>
     <version>1.0-SNAPSHOT</version>
     <properties>
-        <allure.version>1.3.9</allure.version>
+        <allure.version>1.4.15</allure.version>
+        <allure.maven.version>2.2</allure.maven.version>
     </properties>
     <dependencies>
         <dependency>
@@ -23,9 +24,10 @@
             <plugin>
                 <groupId>ru.yandex.qatools.allure</groupId>
                 <artifactId>allure-maven-plugin</artifactId>
-                <version>${allure.version}</version>
+                <version>${allure.maven.version}</version>
                 <configuration>
-                    <allureResultsDirectory>${project.basedir}/reports</allureResultsDirectory>
+                    <resultsPattern>${project.basedir}/reports</resultsPattern>
+                    <!--<reportVersion>1.4.15</reportVersion>-->
                 </configuration>
             </plugin>
         </plugins>
