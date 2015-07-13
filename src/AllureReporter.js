@@ -39,7 +39,7 @@ function AllureReporter(allure) {
     }
     this.allure.startCase(testInfo.category, this.prevCaseEnd);
     this.addStepsToAllure(this.allure, this.rootSteps);
-    this.allure.endCase(passed, null, Date.now());
+    this.allure.endCase(passed ? STATUS_PASSED : STATUS_FAILED, null, Date.now());
     if (this.currentSuite && this.currentSuite !== testInfo.name) {
       this.allure.endSuite(Date.now());
       this.allure.startSuite(testInfo.name);
@@ -59,8 +59,8 @@ function AllureReporter(allure) {
       allure.endStep(step.status, step.endDateTime);
     }
   };
-  this.startStep = function(stepName) {
-    var newStep = {name: stepName, dateTime: Date.now(), steps: []};
+  this.startStep = function(stepName, dateTime) {
+    var newStep = {name: stepName, dateTime: dateTime || Date.now(), steps: []};
     newStep.parent = this.currentStep;
     if (!this.currentStep) {
       this.currentSteps.push(newStep);
