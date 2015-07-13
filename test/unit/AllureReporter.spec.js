@@ -58,10 +58,18 @@ describe('AllureReporter', function() {
     });
     it('adds steps to testcase if step was added from tests', function() {
       var reporter = new Reporter(testAllure());
-      reporter.postTest({}, true, {name: 'describe', category: 'it1'});
       reporter.startStep('step');
+      reporter.postTest({}, true, {name: 'describe', category: 'it1'});
 
       expect(reporter.allure.getCurrentSuite().testcases[0].steps[0].name).toBe('step');
+    });
+    it('adds nested steps inside of other steps', function() {
+      var reporter = new Reporter(testAllure());
+      reporter.startStep('step').startStep('nested');
+      reporter.endStep().endStep();
+      reporter.postTest({}, true, {name: 'describe', category: 'it1'});
+
+      expect(reporter.allure.getCurrentSuite().testcases[0].steps[0].steps[0].name).toBe('nested');
     });
   });
 });

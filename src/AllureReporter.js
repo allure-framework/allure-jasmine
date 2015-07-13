@@ -11,8 +11,14 @@ function AllureReporter(allure) {
   var STATUS_PASSED = 'passed', STATUS_FAILED = 'failed';
   this.allure = allure || new Allure();
   this.currentSuite = null;
-  this.currentSteps = [];
   this.prevCaseEnd = null;
+  /**
+   * Current steps and root steps are recorded inside of the reporter to be flushed into Allure after test case ends
+   * Root is a reverse view of Current steps - the latter is an array of children that reference their parent, the
+   * former is an array of root steps referencing their children.
+   */
+  this.currentSteps = [];
+  this.rootSteps = [];
 
   this.setup = function(userDefinedConfig) {
     var pluginConfig = {allureReport: {resultsDir: 'allure-results'}, basePath: '.'};
@@ -29,28 +35,47 @@ function AllureReporter(allure) {
 
   this.postTest = function(config, passed, testInfo) {
     if (!this.currentSuite) {
-      this.allure.startSuite(testInfo.name, this.globalStartTime);
-    } else if (this.currentSuite !== testInfo.name) {
+      this.allure.startSuite(testInfo.name, this.prevCaseEnd);
+    }
+    this.allure.startCase(testInfo.category, this.prevCaseEnd);
+    this.addStepsToAllure(this.allure, this.rootSteps);
+    this.allure.endCase(passed, null, Date.now());
+    if (this.currentSuite && this.currentSuite !== testInfo.name) {
       this.allure.endSuite(Date.now());
       this.allure.startSuite(testInfo.name);
     }
-    this.allure.startCase(testInfo.category, this.prevCaseEnd);
-    if (this.currentSteps.length !== 0) {
-      this.allure.addStep(this.currentSteps[0].name, this.currentSteps[0].dateTime);
-    }
-    this.allure.endCase(passed, null, Date.now());
     this.currentSuite = testInfo.name;
+    this.prevCaseEnd = Date.now();
+
+    this.currentSteps = [];
+    this.rootSteps = [];
+    this.currentStep = null;
+  };
+  this.addStepsToAllure = function(allure, steps) {
+    for(var i = 0; i < steps.length; i++) {
+      var step = steps[i];
+      allure.startStep(step.name, step.dateTime);
+      this.addStepsToAllure(allure, step.steps);
+      allure.endStep(step.status, step.endDateTime);
+    }
   };
   this.startStep = function(stepName) {
-    var newStep = {name: stepName, dateTime: Date.now()};
+    var newStep = {name: stepName, dateTime: Date.now(), steps: []};
     newStep.parent = this.currentStep;
     if (!this.currentStep) {
       this.currentSteps.push(newStep);
+      this.rootSteps.push(newStep);
+    } else {
+      this.currentStep.steps.push(newStep);
     }
     this.currentStep = newStep;
+    return this;
   };
-  this.endStep = function() {
+  this.endStep = function(status) {
+    this.currentStep.endDateTime = Date.now();
+    this.currentStep.status = status || STATUS_PASSED;
     this.currentStep = this.currentStep.parent;
+    return this;
   };
   this.postResults = function(config) {
   };
