@@ -1,13 +1,13 @@
 {
   "name": "jasmine-allure-reporter",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "description": "Allure Framework reporter to Jasmine and its derivatives (Protractor)",
   "license": "ISC",
   "author": "Stanislav Bashkyrtsev <stanislav.bashkirtsev@gmail.com>",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git@github.com:ctapobep/protractor-allure-plugin.git"
+    "url": "git@github.com:ctapobep/jasmine-allure-plugin.git"
   },
   "keywords": [
     "jasmine-plugin",
