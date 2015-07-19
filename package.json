@@ -1,6 +1,6 @@
 {
   "name": "jasmine-allure-reporter",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Allure Framework reporter to Jasmine and its derivatives (Protractor)",
   "license": "ISC",
   "author": "Stanislav Bashkyrtsev <stanislav.bashkirtsev@gmail.com>",
