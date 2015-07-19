@@ -38,7 +38,6 @@ exports.config = {
 ## TBD
 - Currently attachments are added to the test case instead of the current step. This needs to be fixed in 
  `allure-js-commons`.
-- Get rid of lodash - it's used only in one place, better to write some boilerplate instead
 - Add support to Jasmine1. Right now only Jasmine2 is available (do we really need this?).
 
 # For Developers

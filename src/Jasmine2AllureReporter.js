@@ -1,5 +1,4 @@
 var Allure = require('allure-js-commons');
-var _ = require('lodash');
 var path = require('path');
 
 function Jasmine2AllureReporter(userDefinedConfig, allure) {
@@ -7,8 +6,10 @@ function Jasmine2AllureReporter(userDefinedConfig, allure) {
   this.allure = allure || new Allure();
 
   this.configure = function(userDefinedConfig) {
-    var pluginConfig = {resultsDir: 'allure-results', basePath: '.', useDotNotation: true};
-    pluginConfig = _.defaultsDeep(userDefinedConfig || {}, pluginConfig);
+    var pluginConfig = {};
+    userDefinedConfig = userDefinedConfig || {};
+    pluginConfig.resultsDir = userDefinedConfig.resultsDir || 'allure-results';
+    pluginConfig.basePath = userDefinedConfig.basePath || '.';
     var outDir = path.resolve(pluginConfig.basePath, pluginConfig.resultsDir);
     this.allure.setOptions({targetDir: outDir});
   };

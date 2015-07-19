@@ -1,6 +1,6 @@
 {
   "name": "jasmine-allure-reporter",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Allure Framework reporter to Jasmine and its derivatives (Protractor)",
   "license": "ISC",
   "author": "Stanislav Bashkyrtsev <stanislav.bashkirtsev@gmail.com>",
@@ -20,8 +20,7 @@
     "manual": "node_modules/protractor/bin/protractor ./test/system/conf.js"
   },
   "dependencies": {
-    "allure-js-commons": "1.0.2",
-    "lodash": "3.10.0"
+    "allure-js-commons": "1.0.2"
   },
   "devDependencies": {
     "protractor": "2.1.0",
