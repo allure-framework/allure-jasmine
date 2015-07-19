@@ -1,22 +1,19 @@
 # protractor-allure-plugin
-A plugin to generate an Allure report out of Protractor run (still in development)
+A plugin to generate an Allure report out of Jasmine tests.
 
 ## Configuration
 
-Add the lib into `package.json` and then add allure into `plugins` section of protractor config.
-Allure-reporter has a single config option, it's a `resultsDir` &mdash; result files location relatively to base dir. 
-By default, files save in `allure-results` dir.
+Add the lib into `package.json` and then configure the plugin:
 
 ```js
 // conf.js
-exports.config = {
-  plugins: [{
-    package: 'protractor-allure-reporter',
-    allureReport: {
-      resultsDir: 'allure-results'
-    }
-  }]
-};
+    var jasmineAllureReporter = require('jasmine-allure-reporter').singleton;
+    jasmineAllureReporter.configure({
+      allureReport: {
+        resultsDir: 'allure-results'
+      }
+    });
+    jasmine.getEnv().addReporter(jasmineAllureReporter);
 ```
 
 

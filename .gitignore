@@ -1,4 +1,6 @@
+npm-debug.log
 .idea/
 node_modules/
 reports/
 allure-results/
+target/

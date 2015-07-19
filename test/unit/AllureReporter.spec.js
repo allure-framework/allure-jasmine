@@ -1,75 +1,103 @@
 var path = require('path');
 var Allure = require('allure-js-commons');
-var Reporter = require('../../src/AllureReporter.js').AllureReporter;
-var testAllure = require('../helpers/utils.js').testAllure;
+var Reporter = require('../../src/Jasmine2AllureReporter.js').JasmineAllureReporter;
+var utils = require('../helpers/utils.js');
+var testAllure = utils.testAllure;
+var noZeroDigit = utils.noZeroDigit;
+var rs = require('random-strings');
 
 describe('AllureReporter', function() {
+  Reporter.prototype.runSpecs = utils.runSpecs;
   it('must use allure-results as default out dir', function() {
-    var reporter = new Reporter(new Allure()).setup({});
+    var reporter = new Reporter({}, new Allure());
     expect(reporter.allure.options.targetDir).toBe(path.resolve('.', 'allure-results'));
   });
-
   it('must use allure report dir when it is configured', function() {
-    var reporter = new Reporter().setup({allureReport: {resultsDir: 'reports'}});
+    var reporter = new Reporter({resultsDir: 'reports'});
     expect(reporter.allure.options.targetDir).toBe(path.resolve('.', 'reports'));
   });
-
   describe('reporting', function() {
+    it('uses describe() as suite name', function() {
+      var reporter = new Reporter({}, testAllure());
+      reporter.suiteStarted({fullName: 'describe'});
+
+      expect(reporter.allure.suites.length).toBe(1);
+      expect(reporter.allure.getCurrentSuite().name).toBe('describe');
+    });
+    it('finishes suite when jasmine reported it is done', function() {
+      var reporter = new Reporter(testAllure());
+      reporter.suiteStarted({fullName: 'describe'});
+      reporter.suiteDone({fullName: 'describe'});
+
+      expect(reporter.allure.suites.length).toBe(0);
+    });
     it('must report one suite if one test was run', function() {
       var reporter = new Reporter();
-      reporter.postTest({}, true, {name: 'describe', category: 'it'});
+      reporter.suiteStarted({fullName: 'describe'});
+      reporter.specStarted({description: 'it'});
+      reporter.specDone({status: 'passed'});
 
       expect(reporter.allure.suites.length).toBe(1);
       expect(reporter.allure.getCurrentSuite().name).toBe('describe');
     });
     it('must report one case if one test was run', function() {
       var reporter = new Reporter();
-      reporter.postTest({}, true, {name: 'describe', category: 'it'});
+      reporter.suiteStarted({fullName: 'describe'});
+      reporter.specStarted({description: 'it'});
+      reporter.specDone({status: 'passed'});
 
       var testcases = reporter.allure.getCurrentSuite().testcases;
       expect(testcases.length).toBe(1);
       expect(testcases[0].name).toBe('it');
     });
-    it('must report 2 cases in one suite', function() {
+    it('must report N cases in one suite', function() {
       var reporter = new Reporter();
-      reporter.postTest({}, true, {name: 'describe', category: 'it1'});
-      reporter.postTest({}, true, {name: 'describe', category: 'it2'});
+      reporter.suiteStarted({fullName: 'describe'});
+      var specs = reporter.runSpecs(noZeroDigit());
 
+      expect(reporter.allure.getCurrentSuite().name).toBe('describe');
       var testcases = reporter.allure.getCurrentSuite().testcases;
-      expect(testcases.length).toBe(2);
-      expect(testcases[0].name).toBe('it1');
-      expect(testcases[1].name).toBe('it2');
+      expect(testcases.length).toBe(specs.length);
+      var specIndex = specs.randomSpecIndex();
+      expect(testcases[specIndex].name).toBe(specs[specIndex].description);
     });
-    it('finishes 1st test case when 2nd is started', function() {
-      var reporter = new Reporter();
-      reporter.postTest({}, true, {name: 'describe', category: 'it1'});
-      reporter.postTest({}, true, {name: 'describe', category: 'it2'});
-
-      var testcases = reporter.allure.getCurrentSuite().testcases;
-      expect(testcases[0].stop).toBeDefined();
-      expect(testcases[0].status).toBeTruthy();
-    });
-    it('finishes suite when teardown happens', function() {
+    it('finishes case when jasmine reports it is done', function() {
       var reporter = new Reporter(testAllure());
-      reporter.postTest({}, true, {name: 'describe', category: 'it1'});
-      reporter.teardown();
+      reporter.suiteStarted({fullName: 'describe'});
+      reporter.specStarted({description: 'it'});
+      reporter.endStep('passed');
 
-      expect(reporter.allure.suites.length).toBe(0);
+      expect(reporter.allure.getCurrentSuite().testcases[0].status).toBe('passed');
+    });
+    it('marks case as pending when jasmine reports it as skipped', function() {
+      var reporter = new Reporter(testAllure());
+      reporter.suiteStarted({fullName: 'describe'});
+      reporter.specStarted({description: 'it'});
+      reporter.specDone({status: 'passed'});
+
+      expect(reporter.allure.getCurrentSuite().testcases[0].status).toBe('passed');
     });
     it('adds steps to testcase if step was added from tests', function() {
       var reporter = new Reporter(testAllure());
+      reporter.suiteStarted({fullName: 'describe'});
+      reporter.specStarted({description: 'it'});
       reporter.startStep('step');
-      reporter.postTest({}, true, {name: 'describe', category: 'it1'});
 
       expect(reporter.allure.getCurrentSuite().testcases[0].steps[0].name).toBe('step');
     });
     it('adds nested steps inside of other steps', function() {
       var reporter = new Reporter(testAllure());
-      reporter.startStep('step').startStep('nested');
-      reporter.endStep().endStep();
-      reporter.postTest({}, true, {name: 'describe', category: 'it1'});
+      reporter.suiteStarted({fullName: 'describe'});
+      reporter.specStarted({description: 'it'});
+      reporter.startStep('step1');
+      reporter.startStep('nested');
 
       expect(reporter.allure.getCurrentSuite().testcases[0].steps[0].steps[0].name).toBe('nested');
+    });
+
+    xit('starts fit() in a default suite', function() {
+    });
+    xit('finishes fit() in a default suite', function() {
     });
   });
 });

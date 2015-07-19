@@ -1,7 +1,7 @@
 {
-  "name": "protractor-allure-reporter",
+  "name": "jasmine-allure-reporter",
   "version": "1.0.0",
-  "description": "Allure Framework reporter to Protractor",
+  "description": "Allure Framework reporter to Jasmine and its derivatives (Protractor)",
   "license": "ISC",
   "author": "Stanislav Bashkyrtsev",
   "main": "index.js",
@@ -16,7 +16,7 @@
   ],
   "scripts": {
     "test": "node_modules/.bin/jasmine JASMINE_CONFIG_PATH=test/jasmine.json",
-    "system": "node_modules/protractor/bin/protractor ./test/system/conf.js"
+    "manual": "node_modules/protractor/bin/protractor ./test/system/conf.js"
   },
   "dependencies": {
     "allure-js-commons": "1.0.2"
@@ -31,6 +31,6 @@
     "karma-firefox-launcher": "0.1.4",
     "karma-jasmine": "0.3.5",
     "karma-phantomjs-launcher": "0.1.4",
-    "mockery": "1.4.0"
+    "random-strings": "0.0.1"
   }
 }
