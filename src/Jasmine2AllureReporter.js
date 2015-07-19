@@ -132,4 +132,4 @@ module.exports.singleton = new Jasmine2AllureReporter();
  * of the reporter, give it a shot.
  * @type {Jasmine2AllureReporter}
  */
-module.exports.JasmineAllureReporter = Jasmine2AllureReporter;
+module.exports.Jasmine2AllureReporter = Jasmine2AllureReporter;

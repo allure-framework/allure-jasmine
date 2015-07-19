@@ -1,6 +1,6 @@
 var path = require('path');
 var Allure = require('allure-js-commons');
-var Reporter = require('../../src/Jasmine2AllureReporter.js').JasmineAllureReporter;
+var Reporter = require('../../src/Jasmine2AllureReporter.js').Jasmine2AllureReporter;
 var utils = require('../helpers/utils.js');
 var testAllure = utils.testAllure;
 var noZeroDigit = utils.noZeroDigit;

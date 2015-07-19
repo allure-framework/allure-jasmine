@@ -1,8 +1,7 @@
-/*jslint node: true */
 "use strict";
-var AllureReporter = require('./src/AllureReporter');
+var Jasmine2AllureReporter = require('./src/Jasmine2AllureReporter.js');
 
 // PUBLISH DI MODULE
 module.exports = {
-    'reporter:allure': ['type', AllureReporter]
+    Jasmine2AllureReporter: Jasmine2AllureReporter
 };

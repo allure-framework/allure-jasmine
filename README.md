@@ -7,7 +7,7 @@ Add the lib into `package.json` and then configure the plugin:
 
 ```js
 // conf.js
-    var jasmineAllureReporter = require('jasmine-allure-reporter').singleton;
+    var jasmineAllureReporter = require('jasmine-allure-reporter').Jasmine2AllureReporter.singleton;
     jasmineAllureReporter.configure({
       allureReport: {
         resultsDir: 'allure-results'
@@ -16,7 +16,28 @@ Add the lib into `package.json` and then configure the plugin:
     jasmine.getEnv().addReporter(jasmineAllureReporter);
 ```
 
+### Using in Protractor
+
+Put the above code into the `onPrepare` inside of your `conf.js`:
+```js
+// conf.js
+  onPrepare: function() {
+    var jasmineAllureReporter = require('jasmine-allure-reporter').Jasmine2AllureReporter.singleton;
+    jasmineAllureReporter.configure({
+      allureReport: {
+        resultsDir: 'allure-results'
+      }
+    });
+    jasmine.getEnv().addReporter(jasmineAllureReporter);
+  }
+```
+
+## TBD
+- Add support to Jasmine1. Right now only Jasmine2 is available.
+- Currently attachments are added to the test case instead of the current step. This needs to be fixed in 
+ `allure-js-commons`.
 
 # For Developers
 
-See the [system tests](test/system) to quickly check how the reporter works in real life.
+See the [system tests](test/system) to quickly check how the reporter works in real life:
+`node_modules/protractor/bin/protractor ./test/system/conf.js`

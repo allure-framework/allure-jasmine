@@ -4,7 +4,7 @@ exports.config = {
   specs: ['todo-spec.js', 'todo-spec-failing.js'],
 
   onPrepare: function() {
-    var jasmineAllureReporter = require('jasmine-allure-reporter').singleton;
+    var jasmineAllureReporter = require('../../src/Jasmine2AllureReporter.js').singleton;
     jasmineAllureReporter.configure({
       allureReport: {
         resultsDir: 'allure-results'
