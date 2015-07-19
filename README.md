@@ -1,7 +1,7 @@
 # protractor-allure-plugin
 A plugin to generate an Allure report out of Jasmine tests.
 
-## Configuration
+## Using Allure Reporter in Jasmine2
 
 Add the lib into `package.json` and then configure the plugin:
 
@@ -16,11 +16,13 @@ Add the lib into `package.json` and then configure the plugin:
     jasmine.getEnv().addReporter(jasmineAllureReporter);
 ```
 
-### Using in Protractor
+### Using Allure Reporter in Protractor
 
 Put the above code into the `onPrepare` inside of your `conf.js`:
 ```js
 // conf.js
+exports.config = {
+  framework: 'jasmine2',
   onPrepare: function() {
     var jasmineAllureReporter = require('jasmine-allure-reporter').Jasmine2AllureReporter.singleton;
     jasmineAllureReporter.configure({
@@ -30,12 +32,14 @@ Put the above code into the `onPrepare` inside of your `conf.js`:
     });
     jasmine.getEnv().addReporter(jasmineAllureReporter);
   }
+}
 ```
 
 ## TBD
-- Add support to Jasmine1. Right now only Jasmine2 is available.
 - Currently attachments are added to the test case instead of the current step. This needs to be fixed in 
  `allure-js-commons`.
+- Get rid of lodash - it's used only in one place, better to write some boilerplate instead
+- Add support to Jasmine1. Right now only Jasmine2 is available (do we really need this?).
 
 # For Developers
 
