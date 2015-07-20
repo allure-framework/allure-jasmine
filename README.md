@@ -38,6 +38,7 @@ exports.config = {
 ## TBD
 - Currently attachments are added to the test case instead of the current step. This needs to be fixed in 
  `allure-js-commons`.
+- Add support for Labels and Features.
 - Add support to Jasmine1. Right now only Jasmine2 is available (do we really need this?).
 
 # For Developers
