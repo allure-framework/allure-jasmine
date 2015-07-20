@@ -15,8 +15,6 @@ function Jasmine2AllureReporter(userDefinedConfig, allure) {
   };
   this.configure(userDefinedConfig);
 
-  this.jasmineStarted = function() {
-  };
   this.suiteStarted = function(suite) {
     this.allure.startSuite(suite.fullName);
   };
@@ -86,9 +84,6 @@ function Jasmine2AllureReporter(userDefinedConfig, allure) {
   this.failedStep = function(stepName) {
     this.startStep(stepName);
     this.endStep(Status.FAILED);
-  };
-  this.jasmineDone = function() {
-    console.info('Jasmine Done')
   };
   this._getTestcaseStatus = function(status) {
     if (status === 'disabled' || status === 'pending') {
