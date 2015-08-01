@@ -20,6 +20,20 @@
             <type>war</type>
         </dependency>
     </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.eclipse.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <version>9.2.10.v20150310</version>
+                <configuration>
+                    <webAppSourceDirectory>target/site/allure-maven-plugin</webAppSourceDirectory>
+                    <stopKey>stop</stopKey>
+                    <stopPort>2299</stopPort>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
     <reporting>
         <excludeDefaults>true</excludeDefaults>
         <plugins>
