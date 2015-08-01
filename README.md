@@ -35,7 +35,8 @@ exports.config = {
 ## Generate HTML report from Allure results
 
 The Reporter will generate xml files inside of a `resultsDir`, then we need to generate HTML out of them. You can
-either use Maven for that: `mvn site -f node_modules/jasmine-allure-reporter/pom.xml -Dallure.results_pattern=.` or
+either use Maven for that:
+`mvn site -f node_modules/jasmine-allure-reporter/pom.xml -Dallure.results_pattern=allure-results` or
 choose [one of other ways to generate HTML](https://github.com/allure-framework/allure-core/wiki#generating-a-report).
 
 ## TBD
