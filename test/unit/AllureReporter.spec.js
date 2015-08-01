@@ -2,9 +2,8 @@ var path = require('path');
 var Allure = require('allure-js-commons');
 var Reporter = require('../../src/Jasmine2AllureReporter.js').Jasmine2AllureReporter;
 var utils = require('../helpers/utils.js');
-var testAllure = utils.testAllure;
 var noZeroDigit = utils.noZeroDigit;
-var rs = require('random-strings');
+var jasmineReporter = utils.jasmineReporter;
 
 describe('AllureReporter', function() {
   Reporter.prototype.runSpecs = utils.runSpecs;
@@ -18,21 +17,21 @@ describe('AllureReporter', function() {
   });
   describe('reporting', function() {
     it('uses describe() as suite name', function() {
-      var reporter = new Reporter({}, testAllure());
+      var reporter = jasmineReporter();
       reporter.suiteStarted({fullName: 'describe'});
 
       expect(reporter.allure.suites.length).toBe(1);
       expect(reporter.allure.getCurrentSuite().name).toBe('describe');
     });
     it('finishes suite when jasmine reported it is done', function() {
-      var reporter = new Reporter(testAllure());
+      var reporter = jasmineReporter();
       reporter.suiteStarted({fullName: 'describe'});
       reporter.suiteDone({fullName: 'describe'});
 
       expect(reporter.allure.suites.length).toBe(0);
     });
     it('must report one suite if one test was run', function() {
-      var reporter = new Reporter();
+      var reporter = jasmineReporter();
       reporter.suiteStarted({fullName: 'describe'});
       reporter.specStarted({description: 'it'});
       reporter.specDone({status: 'passed'});
@@ -41,7 +40,7 @@ describe('AllureReporter', function() {
       expect(reporter.allure.getCurrentSuite().name).toBe('describe');
     });
     it('must report one case if one test was run', function() {
-      var reporter = new Reporter();
+      var reporter = jasmineReporter();
       reporter.suiteStarted({fullName: 'describe'});
       reporter.specStarted({description: 'it'});
       reporter.specDone({status: 'passed'});
@@ -51,7 +50,7 @@ describe('AllureReporter', function() {
       expect(testcases[0].name).toBe('it');
     });
     it('must report N cases in one suite', function() {
-      var reporter = new Reporter();
+      var reporter = jasmineReporter();
       reporter.suiteStarted({fullName: 'describe'});
       var specs = reporter.runSpecs(noZeroDigit());
 
@@ -62,7 +61,7 @@ describe('AllureReporter', function() {
       expect(testcases[specIndex].name).toBe(specs[specIndex].description);
     });
     it('finishes case when jasmine reports it is done', function() {
-      var reporter = new Reporter(testAllure());
+      var reporter = jasmineReporter();
       reporter.suiteStarted({fullName: 'describe'});
       reporter.specStarted({description: 'it'});
       reporter.endStep('passed');
@@ -70,7 +69,7 @@ describe('AllureReporter', function() {
       expect(reporter.allure.getCurrentSuite().testcases[0].status).toBe('passed');
     });
     it('marks case as pending when jasmine reports it as skipped', function() {
-      var reporter = new Reporter(testAllure());
+      var reporter = jasmineReporter();
       reporter.suiteStarted({fullName: 'describe'});
       reporter.specStarted({description: 'it'});
       reporter.specDone({status: 'passed'});
@@ -78,7 +77,7 @@ describe('AllureReporter', function() {
       expect(reporter.allure.getCurrentSuite().testcases[0].status).toBe('passed');
     });
     it('adds steps to testcase if step was added from tests', function() {
-      var reporter = new Reporter(testAllure());
+      var reporter = jasmineReporter();
       reporter.suiteStarted({fullName: 'describe'});
       reporter.specStarted({description: 'it'});
       reporter.startStep('step');
@@ -86,7 +85,7 @@ describe('AllureReporter', function() {
       expect(reporter.allure.getCurrentSuite().testcases[0].steps[0].name).toBe('step');
     });
     it('adds nested steps inside of other steps', function() {
-      var reporter = new Reporter(testAllure());
+      var reporter = jasmineReporter();
       reporter.suiteStarted({fullName: 'describe'});
       reporter.specStarted({description: 'it'});
       reporter.startStep('step1');

@@ -1,3 +1,4 @@
+var Reporter = require('../../src/Jasmine2AllureReporter.js').Jasmine2AllureReporter;
 var Allure = require('allure-js-commons');
 var path = require('path');
 var rs = require('random-strings');
@@ -7,6 +8,10 @@ function testAllure() {
   //using maven conventions (target dir)
   allure.setOptions({targetDir: path.resolve('.', 'target')});
   return allure;
+}
+
+function jasmineReporter() {
+  return new Reporter({}, testAllure());
 }
 
 function runSpecs(number) {
@@ -36,7 +41,8 @@ function lesserDigit(digit) {
   return +rs.random(1, alphabet);
 }
 
-module.exports.testAllure = testAllure;
-module.exports.runSpecs = runSpecs;
-module.exports.noZeroDigit = noZeroDigit;
-module.exports.lesserDigit = lesserDigit;
+exports.testAllure = testAllure;
+exports.runSpecs = runSpecs;
+exports.noZeroDigit = noZeroDigit;
+exports.lesserDigit = lesserDigit;
+exports.jasmineReporter = jasmineReporter;

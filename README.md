@@ -7,15 +7,13 @@ Add the lib into `package.json` and then configure the plugin:
 
 ```js
 // conf.js
-    var jasmineAllureReporter = require('jasmine-allure-reporter').Jasmine2AllureReporter.singleton;
-    jasmineAllureReporter.configure({
-      allureReport: {
-        resultsDir: 'allure-results'
-      }
-    });
-    jasmine.getEnv().addReporter(jasmineAllureReporter);
+var AllureReporter = require('jasmine-allure-reporter');
+jasmine.getEnv().addReporter(new AllureReporter({
+  allureReport: {
+    resultsDir: 'allure-results'
+  }
+}));
 ```
-
 ### Using Allure Reporter in Protractor
 
 Put the above code into the `onPrepare` inside of your `conf.js`:
@@ -24,13 +22,12 @@ Put the above code into the `onPrepare` inside of your `conf.js`:
 exports.config = {
   framework: 'jasmine2',
   onPrepare: function() {
-    var jasmineAllureReporter = require('jasmine-allure-reporter').Jasmine2AllureReporter.singleton;
-    jasmineAllureReporter.configure({
+    var AllureReporter = require('jasmine-allure-reporter');
+    jasmine.getEnv().addReporter(new AllureReporter({
       allureReport: {
         resultsDir: 'allure-results'
       }
-    });
-    jasmine.getEnv().addReporter(jasmineAllureReporter);
+    }));
   }
 }
 ```
@@ -38,8 +35,10 @@ exports.config = {
 ## TBD
 - Currently attachments are added to the test case instead of the current step. This needs to be fixed in 
  `allure-js-commons`.
-- Add support for Labels and Features.
+- Add support for Features.
 - Add support to Jasmine1. Right now only Jasmine2 is available (do we really need this?).
+- Add ability to use reflection for decoration method of page objects so that we don't need to write Allure-related
+ boilerplate tying ourselves to one specific reporter.
 
 # For Developers
 

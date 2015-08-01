@@ -1,19 +1,12 @@
-var allure = require('../../src/Jasmine2AllureReporter.js').singleton;
-
-describe('failing angularjs homepage', function() {
-  describe('todo list inside nested describe()', function() {
-    it('todo', function() {
-      allure.failedStep('Opening main page');
+describe('failing angularjs homepage', function () {
+  describe('todo list inside nested describe()', function () {
+    it('step that throws error and makes screenshot', function () {
+      allure.createStep('Opening main page', function () {throw Error('Expected error to test failing step')})();
       browser.get('https://angularjs.org');
-      allure.startStep('Checking screenshots');
-      browser.takeScreenshot().then(function(png) {
-        allure.addBase64Attachment('Main page', png);
-      });
-      allure.endStep('passed');
 
-      allure.startStep('Checking txt attachments');
-      allure.addAttachment('Text Attachment', 'let it be text');
-      allure.endStep('passed');
+      allure.createStep('Checking txt attachments', function () {
+        allure.createAttachment('Text Attachment', function () {return 'let it be text'}, 'text/plain')();
+      })();
 
       element(by.model('todoList.todoText')).sendKeys('write first protractor test');
       element(by.css('[value="add"]')).click();
@@ -30,18 +23,17 @@ describe('failing angularjs homepage', function() {
 
   });
 
-  it('one more todo', function() {
+  it('one more todo', function () {
     browser.get('https://angularjs.org');
-    allure.startStep('Filling data');
-    allure.startStep('Fill todo text');
-    allure.endStep();
+    allure.createStep('Filling data', function () {
+      allure.createStep('Fill todo text', function () {})();
+    })();
     element(by.model('todoList.todoText')).sendKeys('write first protractor test');
     element(by.css('[value="add"]')).click();
 
-    allure.startStep('another internal step');
-    allure.endStep('failed');
-    allure.endStep('failed');
-
+    allure.createStep('another internal step', function () {
+      allure.createStep('failed', function () {throw new Error('Expected error to test failing step')})();
+    })();
     var todoList = element.all(by.repeater('todo in todoList.todos'));
     expect(todoList.count()).toEqual(3);
     expect(todoList.get(1).getText()).toEqual('write first protractor test');
@@ -53,13 +45,13 @@ describe('failing angularjs homepage', function() {
   });
   xit('other its() failed, but this one is disabled');
 
-  xdescribe('skipped describe()', function() {
-    xit('skipped it() inside of skipped describe()', function() {
+  xdescribe('skipped describe()', function () {
+    xit('skipped it() inside of skipped describe()', function () {
     });
     it('empty it() inside skipped describe()');
   });
   xdescribe('empty & skipped describe');
-  describe('describe with empty it()', function() {
+  describe('describe with empty it()', function () {
     xit('empty & skipped it()');
   });
 });
