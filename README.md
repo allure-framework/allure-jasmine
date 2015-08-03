@@ -1,4 +1,5 @@
-# protractor-allure-plugin
+# Jasmine Allure Plugin
+
 A plugin to generate an Allure report out of Jasmine tests.
 
 ## Using Allure Reporter in Jasmine2
