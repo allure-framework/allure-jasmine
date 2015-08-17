@@ -7,7 +7,7 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git@github.com:ctapobep/jasmine-allure-plugin.git"
+    "url": "git@github.com:allure-framework/allure-jasmine-plugin.git"
   },
   "keywords": [
     "jasmine-plugin",
