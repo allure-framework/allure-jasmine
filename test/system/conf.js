@@ -9,9 +9,7 @@ exports.config = {
   onPrepare: function() {
     var AllureReporter = require('../../index.js');
     jasmine.getEnv().addReporter(new AllureReporter({
-      allureReport: {
-        resultsDir: 'allure-results'
-      }
+      resultsDir: 'allure-results'
     }));
   }
 };

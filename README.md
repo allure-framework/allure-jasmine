@@ -10,9 +10,7 @@ Add the lib into `package.json` and then configure the plugin:
 // conf.js
 var AllureReporter = require('jasmine-allure-reporter');
 jasmine.getEnv().addReporter(new AllureReporter({
-  allureReport: {
-    resultsDir: 'allure-results'
-  }
+  resultsDir: 'allure-results'
 }));
 ```
 ### Using Allure Reporter in Protractor
@@ -25,9 +23,7 @@ exports.config = {
   onPrepare: function() {
     var AllureReporter = require('jasmine-allure-reporter');
     jasmine.getEnv().addReporter(new AllureReporter({
-      allureReport: {
-        resultsDir: 'allure-results'
-      }
+      resultsDir: 'allure-results'
     }));
   }
 }
