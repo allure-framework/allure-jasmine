@@ -43,6 +43,24 @@ It will put HTMLs into `target/site/allure-maven-plugin` folder. To serve them v
 
 Otherwise choose [one of other ways to generate HTML](https://github.com/allure-framework/allure-core/wiki#generating-a-report).
 
+## Adding Screenshot in the end of each test
+
+```javascript
+  onPrepare: function () {
+    var AllureReporter = require('jasmine-allure-reporter');
+    jasmine.getEnv().addReporter(new AllureReporter());
+    jasmine.getEnv().afterEach(function(done){
+      browser.takeScreenshot().then(function (png) {
+        allure.createAttachment('Screenshot', function () {
+          return new Buffer(png, 'base64')
+        }, 'image/png')();
+        done();
+      })
+    });
+  }
+```
+Note `done` callback! 
+
 ## TBD
 - Currently attachments are added to the test case instead of the current step. This needs to be fixed in 
  `allure-js-commons`.
