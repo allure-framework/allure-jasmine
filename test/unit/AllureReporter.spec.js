@@ -64,7 +64,7 @@ describe('AllureReporter', function() {
       var reporter = jasmineReporter();
       reporter.suiteStarted({fullName: 'describe'});
       reporter.specStarted({description: 'it'});
-      reporter.endStep('passed');
+      reporter.allure.endStep('passed');
 
       expect(reporter.allure.getCurrentSuite().testcases[0].status).toBe('passed');
     });
@@ -80,7 +80,7 @@ describe('AllureReporter', function() {
       var reporter = jasmineReporter();
       reporter.suiteStarted({fullName: 'describe'});
       reporter.specStarted({description: 'it'});
-      reporter.startStep('step');
+      reporter.allure.startStep('step');
 
       expect(reporter.allure.getCurrentSuite().testcases[0].steps[0].name).toBe('step');
     });
@@ -88,8 +88,8 @@ describe('AllureReporter', function() {
       var reporter = jasmineReporter();
       reporter.suiteStarted({fullName: 'describe'});
       reporter.specStarted({description: 'it'});
-      reporter.startStep('step1');
-      reporter.startStep('nested');
+      reporter.allure.startStep('step1');
+      reporter.allure.startStep('nested');
 
       expect(reporter.allure.getCurrentSuite().testcases[0].steps[0].steps[0].name).toBe('nested');
     });
