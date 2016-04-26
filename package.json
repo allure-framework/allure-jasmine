@@ -20,7 +20,7 @@
     "manual": "node_modules/protractor/bin/protractor ./test/system/conf.js"
   },
   "dependencies": {
-    "allure-js-commons": "1.0.2"
+    "allure-js-commons": "1.1.4"
   },
   "devDependencies": {
     "protractor": "2.1.0",
