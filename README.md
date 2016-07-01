@@ -59,10 +59,13 @@ Otherwise choose [one of other ways to generate HTML](https://github.com/allure-
     });
   }
 ```
-Note `done` callback! 
+Note `done` callback!
+
+## Additional allure options
+- `{cleanDir: true}` - will cleanup `allure-results` directory before jasmine starts up
 
 ## TBD
-- Currently attachments are added to the test case instead of the current step. This needs to be fixed in 
+- Currently attachments are added to the test case instead of the current step. This needs to be fixed in
  `allure-js-commons`.
 - Add support for Features.
 - Add support to Jasmine1. Right now only Jasmine2 is available (do we really need this?).
