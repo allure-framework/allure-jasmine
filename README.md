@@ -67,7 +67,7 @@ Note `done` callback!
 - Add support for Features.
 - Add support to Jasmine1. Right now only Jasmine2 is available (do we really need this?).
 - Add ability to use reflection for decoration method of page objects so that we don't need to write Allure-related
- boilerplate tying ourselves to one specific reporter.
+ boilerplate trying ourselves to one specific reporter.
 
 # For Developers
 
