@@ -18,10 +18,14 @@ function Jasmine2AllureReporter(userDefinedConfig, allureReporter) {
     userDefinedConfig = userDefinedConfig || {};
     pluginConfig.resultsDir = userDefinedConfig.resultsDir || 'allure-results';
     pluginConfig.basePath = userDefinedConfig.basePath || '.';
-    var outDir = path.resolve(pluginConfig.basePath, pluginConfig.resultsDir);
-    this.allure.setOptions({targetDir: outDir});
+    userDefinedConfig.targetDir = path.resolve(pluginConfig.basePath, pluginConfig.resultsDir);
+    this.allure.setOptions(userDefinedConfig);
   };
   this.configure(userDefinedConfig);
+
+  this.jasmineStarted = function() {
+    this.allure.beforeStart();
+  };
 
   this.suiteStarted = function(suite) {
     this.allure.startSuite(suite.fullName);
