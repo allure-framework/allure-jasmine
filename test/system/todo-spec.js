@@ -70,7 +70,7 @@ describe('angularjs homepage', function() {
     });
     it('empty it() inside skipped describe()');
   });
-  xdescribe('empty & skipped describe');
+  xdescribe('empty & skipped describe', function() {});
   describe('describe with empty it()', function() {
     xit('empty & skipped it()');
   });
