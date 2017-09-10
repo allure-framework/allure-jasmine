@@ -15,7 +15,6 @@ function jasmineReporter() {
 }
 
 function runSpecs(number) {
-  console.info('Running ' + number + ' of specs');
   var specs = [];
   specs.randomSpecIndex = function() {return lesserDigit(this.length)};
   for (var i = 0; i < number; i++) {

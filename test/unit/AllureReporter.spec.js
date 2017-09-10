@@ -64,7 +64,7 @@ describe('AllureReporter', function() {
       var reporter = jasmineReporter();
       reporter.suiteStarted({fullName: 'describe'});
       reporter.specStarted({description: 'it'});
-      reporter.allure.endStep('passed');
+      reporter.allure.endCase('passed');
 
       expect(reporter.allure.getCurrentSuite().testcases[0].status).toBe('passed');
     });

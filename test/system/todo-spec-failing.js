@@ -1,24 +1,12 @@
 describe('failing angularjs homepage', function () {
   describe('todo list inside nested describe()', function () {
-    it('step that throws error and makes screenshot', function () {
+    it('step that throws error', function () {
       allure.createStep('Opening main page', function () {throw Error('Expected error to test failing step')})();
+
+      // the code bellow should not be called
       browser.get('https://angularjs.org');
 
-      allure.createStep('Checking txt attachments', function () {
-        allure.createAttachment('Text Attachment', function () {return 'let it be text'}, 'text/plain')();
-      })();
-
-      element(by.model('todoList.todoText')).sendKeys('write first protractor test');
-      element(by.css('[value="add"]')).click();
-
-      var todoList = element.all(by.repeater('todo in todoList.todos'));
-      expect(todoList.count()).toEqual(3);
-      expect(todoList.get(2).getText()).toEqual('write first protractor test');
-
-      // You wrote your first test, cross it off the list
-      todoList.get(2).element(by.css('input')).click();
-      var completedAmount = element.all(by.css('.done-true'));
-      expect(completedAmount.count()).toEqual(1);
+      allure.createStep('Step after failure', function () {})();
     });
 
   });
@@ -34,14 +22,13 @@ describe('failing angularjs homepage', function () {
     allure.createStep('another internal step', function () {
       allure.createStep('failed', function () {throw new Error('Expected error to test failing step')})();
     })();
+
+    // the code bellow should not be called
     var todoList = element.all(by.repeater('todo in todoList.todos'));
     expect(todoList.count()).toEqual(3);
     expect(todoList.get(1).getText()).toEqual('write first protractor test');
 
-    // You wrote your first test, cross it off the list
-    todoList.get(2).element(by.css('input')).click();
-    var completedAmount = element.all(by.css('.done-true'));
-    expect(completedAmount.count()).toEqual(2);
+    allure.createStep('Step after failure', function () {})();
   });
   xit('other its() failed, but this one is disabled');
 
@@ -50,7 +37,6 @@ describe('failing angularjs homepage', function () {
     });
     it('empty it() inside skipped describe()');
   });
-  xdescribe('empty & skipped describe');
   describe('describe with empty it()', function () {
     xit('empty & skipped it()');
   });
