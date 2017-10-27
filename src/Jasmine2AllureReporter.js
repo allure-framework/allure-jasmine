@@ -54,7 +54,7 @@ function Jasmine2AllureReporter(userDefinedConfig, allureReporter) {
       };
     } else if (result.status === 'pending') {
       return {
-        message: 'This test has not been implemented yet',
+        message: result.pendingReason,
         stack: ''
       };
     }
