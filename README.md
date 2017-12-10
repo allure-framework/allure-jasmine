@@ -55,7 +55,7 @@ After this, you can add `"posttest": "allure generate allure-results --clean -o 
         "posttest": "allure generate allure-results --clean -o allure-report || true"
     }`
 ```
-Added the bash `||` operator to overcome this [issue](https://stackoverflow.com/questions/25292344/npm-posttest-doesnt-trigger-if-npm-test-fails)
+Added the bash `||` operator in the `posttest` to overcome this [issue](https://stackoverflow.com/questions/25292344/npm-posttest-doesnt-trigger-if-npm-test-fails)
 
 
 Otherwise choose [one of other ways to generate HTML](https://github.com/allure-framework/allure-core/wiki#generating-a-report).
