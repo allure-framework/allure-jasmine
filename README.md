@@ -33,7 +33,7 @@ exports.config = {
 
 The Reporter will generate xml files inside of a `resultsDir`, then we need to generate HTML out of them. 
 
-## Method 1:
+### Using Maven
 In this method, we will use Maven. Copy ready-to-use `pom.xml` from `node_modules/jasmine-allure-reporter` and run:
 
 ```mvn site -Dallure.results_pattern=allure-results```
@@ -42,7 +42,7 @@ It will put HTMLs into `target/site/allure-maven-plugin` folder. To serve them v
 
 ```mvn jetty:run -Djetty.port=1234```
 
-## Method 2:
+### Using Allure Command Line Tool
 In this method, we will use 'Allure Command Line Tool' for generating the report. Just add allure-commandline dependency in your current project by running the below command.
 
 ```npm install allure-commandline --save-dev```
@@ -53,9 +53,9 @@ After this, you can add `"posttest": "allure generate allure-results --clean -o 
         "pretest": "rm -rf allure-report",
         "test": "protractor conf.js",
         "posttest": "allure generate allure-results --clean -o allure-report || true"
-    }`
+    }
 ```
-Added the bash `||` operator in the `posttest` to overcome this [issue](https://stackoverflow.com/questions/25292344/npm-posttest-doesnt-trigger-if-npm-test-fails)
+Added the bash `||` operator in `posttest` to overcome this [issue](https://stackoverflow.com/questions/25292344/npm-posttest-doesnt-trigger-if-npm-test-fails)
 
 
 Otherwise choose [one of other ways to generate HTML](https://github.com/allure-framework/allure-core/wiki#generating-a-report).
