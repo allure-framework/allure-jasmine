@@ -58,14 +58,20 @@ function Jasmine2AllureReporter(userDefinedConfig, allureReporter) {
         stack: ''
       };
     }
-    var failure = result.failedExpectations ? result.failedExpectations[0] : null;
-    if (failure) {
+    var failures = result.failedExpectations.length > 0 ? result.failedExpectations : null;
+    if (failures) {
+      var message = '', stack = '';
+      for(let i = 0; i < failures.length; i++){
+        message += i+1 + '. ' + failures[i].message + '\n';
+        stack += i+1 + '. ' + failures[i].message + '\n' + '\n' + failures[i].stack + '\n' + '\n';
+      }
       return {
-        message: failure.message,
-        stack: failure.stack
+        message: message,
+        stack: stack
       };
     }
   };
+
 
 }
 
