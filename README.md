@@ -33,17 +33,8 @@ exports.config = {
 
 The Reporter will generate xml files inside of a `resultsDir`, then we need to generate HTML out of them. 
 
-### Using Maven
-In this method, we will use Maven. Copy ready-to-use `pom.xml` from `node_modules/jasmine-allure-reporter` and run:
-
-```mvn site -Dallure.results_pattern=allure-results```
-
-It will put HTMLs into `target/site/allure-maven-plugin` folder. To serve them via localhost:1324 use:
-
-```mvn jetty:run -Djetty.port=1234```
-
 ### Using Allure Command Line Tool
-In this method, we will use 'Allure Command Line Tool' for generating the report. Just add allure-commandline dependency in your current project by running the below command.
+Add the `allure-commandline` dependency in your current project by running the below command.
 
 ```npm install allure-commandline --save-dev```
 
