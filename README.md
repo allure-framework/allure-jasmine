@@ -15,7 +15,7 @@ jasmine.getEnv().addReporter(new AllureReporter({
 ```
 ### Using Allure Reporter in Protractor
 
-Put the above code into the `onPrepare` inside of your `conf.js`:
+Put the below code into the `onPrepare` inside of your `conf.js`:
 ```js
 // conf.js
 exports.config = {
