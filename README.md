@@ -1,3 +1,6 @@
+# [DEPRECATED]
+## Please follow https://github.com/allure-framework/allure-js
+
 # Jasmine Allure Plugin
 
 A plugin to generate an Allure report out of Jasmine tests.
